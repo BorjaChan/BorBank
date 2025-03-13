@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Confianza - Nuestras Tarjetas</title>
+    <style>
+        :root {
+            --primary: #003366;
+            --secondary: #0059b3;
+            --accent: #ffd700;
+            --light: #f5f5f5;
+            --dark: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .menu li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        .menu li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .menu li a:hover {
+            color: var(--accent);
+        }
+        
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+        
+        .menu li a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            margin-top: 70px;
+            padding: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: cover;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            animation: slideUp 1s ease-out 0.5s forwards;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cards-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent);
+            margin: 0.8rem auto;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            perspective: 1000px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding: 1.5rem;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--primary);
+        }
+        
+        .credit-card::before {
+            background-color: var(--primary);
+        }
+        
+        .debit-card::before {
+            background-color: #008855;
+        }
+        
+        .premium-card::before {
+            background-color: #b8860b;
+        }
+        
+        .business-card::before {
+            background-color: #800080;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .card-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: #666;
+            flex-grow: 1;
+        }
+        
+        .card-benefits {
+            margin-bottom: 1.5rem;
+        }
+        
+        .benefit {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .benefit-icon {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .card-image {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            height: 150px;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .card-chip {
+            position: absolute;
+            width: 40px;
+            height: 30px;
+            background-color: var(--accent);
+            border-radius: 5px;
+            top: 60px;
+            left: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-number {
+            position: absolute;
+            bottom: 60px;
+            left: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        
+        .card-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .features-section {
+            background-color: var(--primary);
+            color: white;
+            padding: 5rem 2rem;
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .features-section .section-title {
+            color: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .cta-section {
+            padding: 5rem 2rem;
+            background-color: var(--light);
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-description {
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo span {
+            color: var(--accent);
+        }
+        
+        .footer-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+        
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+        }
+        
+        .animated-card {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .premium-card {
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .menu {
+                display: none;
+            }
+        }
+        
+        /* Elementos flotantes animados */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            animation: floatElement 20s linear infinite;
+        }
+        
+        @keyframes floatElement {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Banco<span>Confianza</span></div>
+            <ul class="menu">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#tarjetas">Tarjetas</a></li>
+                <li><a href="#beneficios">Beneficios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero" id="inicio">
+        <div class="floating-elements">
+            <div class="floating-circle" style="width: 80px; height: 80px; left: 10%; top: 100%; animation-duration: 15s;"></div>
+            <div class="floating-circle" style="width: 50px; height: 50px; left: 25%; top: 100%; animation-duration: 20s; animation-delay: 2s;"></div>
+            <div class="floating-circle" style="width: 100px; height: 100px; left: 40%; top: 100%; animation-duration: 18s; animation-delay: 5s;"></div>
+            <div class="floating-circle" style="width: 70px; height: 70px; left: 65%; top: 100%; animation-duration: 22s; animation-delay: 7s;"></div>
+            <div class="floating-circle" style="width: 60px; height: 60px; left: 85%; top: 100%; animation-duration: 25s; animation-delay: 10s;"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Descubre Nuestro Mundo de Tarjetas</h1>
+            <p class="hero-subtitle">Soluciones financieras adaptadas a tu estilo de vida con los mejores beneficios y seguridad garantizada.</p>
+            <a href="#tarjetas" class="btn">Explorar Tarjetas</a>
+        </div>
+    </section>
+    
+    <section class="cards-section" id="tarjetas">
+        <h2 class="section-title">Nuestras Tarjetas</h2>
+        <div class="cards-container">
+            <div class="card credit-card animated-card" onclick="openModal('credito')">
+                <div class="card-image">
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** 1234</div>
+                    <div class="card-logo">BC Clásica</div>
+                    BANCO CONFIANZA
+                </div>
+                <h3 class="card-title">Tarjeta de Crédito Clásica</h3>
+                <p class="card-description">Ideal para tus compras diarias con tasas competitivas y flexibilidad en tus pagos.</p>
+                <div class="card-benefits">
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Sin comisión anual el primer año</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>3% de cashback en restaurantes</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Seguro de compra protegida</span>
+                    </div>
+                </div>
+                <a href="#" class="btn">Solicitar Ahora</a>
+            </div>
+            
+            <div class="card debit-card animated-card" style="animation-delay: 0.5s" onclick="openModal('debito')">
+                <div class="card-image" style="background: linear-gradient(135deg, #008855, #00aa66);">
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** 5678</div>
+                    <div class="card-logo">BC Débito</div>
+                    BANCO CONFIANZA
+                </div>
+                <h3 class="card-title">Tarjeta de Débito</h3>
+                <p class="card-description">Accede a tu dinero de forma segura en cualquier momento y lugar con nuestra tarjeta de débito.</p>
+                <div class="card-benefits">
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Sin comisión de mantenimiento</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Retiros ilimitados en cajeros propios</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Notificaciones de transacciones</span>
+                    </div>
+                </div>
+                <a href="#" class="btn">Solicitar Ahora</a>
+            </div>
+            
+            <div class="card premium-card" style="animation-delay: 1s" onclick="openModal('premium')">
+                <div class="card-image" style="background: linear-gradient(135deg, #b8860b, #ffd700);">
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** 9012</div>
+                    <div class="card-logo">BC Premium</div>
+                    BANCO CONFIANZA
+                </div>
+                <h3 class="card-title">Tarjeta Premium Gold</h3>
+                <p class="card-description">Exclusividad y privilegios especiales para quienes buscan lo mejor con nuestra tarjeta premium.</p>
+                <div class="card-benefits">
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Acceso a salas VIP en aeropuertos</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>5% de cashback en viajes</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Concierge personal 24/7</span>
+                    </div>
+                </div>
+                <a href="#" class="btn">Solicitar Ahora</a>
+            </div>
+            
+            <div class="card business-card animated-card" style="animation-delay: 1.5s" onclick="openModal('negocios')">
+                <div class="card-image" style="background: linear-gradient(135deg, #800080, #ba55d3);">
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** 3456</div>
+                    <div class="card-logo">BC Business</div>
+                    BANCO CONFIANZA
+                </div>
+                <h3 class="card-title">Tarjeta de Negocios</h3>
+                <p class="card-description">Diseñada para empresarios y profesionales que necesitan separar gastos personales y de negocio.</p>
+                <div class="card-benefits">
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Reportes de gastos categorizados</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>4% cashback en oficinas y suministros</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">✓</span>
+                        <span>Tarjetas adicionales sin costo</span>
+                    </div>
+                </div>
+                <a href="#" class="btn">Solicitar Ahora</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features-section" id="beneficios">
+        <div class="features-container">
+            <h2 class="section-title">Beneficios Exclusivos</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Seguridad Garantizada</h3>
+                    <p class="feature-description">Todas nuestras tarjetas cuentan con la última tecnología de seguridad, incluyendo chip EMV, autenticación biométrica y alertas en tiempo real.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Programa de Recompensas</h3>
+                    <p class="feature-description">Acumula puntos con cada compra y canjéalos por viajes, productos, servicios o incluso efectivo. Nuestro programa no tiene fecha de expiración.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">🌍</div>
+                    <h3 class="feature-title">Cobertura Mundial</h3>
+                    <p class="feature-description">Utiliza tu tarjeta en cualquier parte del mundo sin preocupaciones, con tipo de cambio preferencial y asistencia en viajes las 24 horas.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Banca Móvil</h3>
+                    <p class="feature-description">Controla todas tus tarjetas desde nuestra aplicación móvil. Bloquea, desbloquea, establece límites y revisa tus transacciones en tiempo real.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section" id="contacto">
+        <div class="cta-container">
+            <h2 class="cta-title">¿Listo para elegir tu tarjeta?</h2>
+            <p class="cta-description">Nuestros asesores están esperando para ayudarte a encontrar la mejor opción según tus necesidades financieras.</p>
+            <a href="#" class="btn">Contactar a un Asesor</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-container">
+            <div>
+                <div class="footer-logo">Banco<span>Confianza</span></div>
+                <p class="footer-description">Más de 25 años construyendo relaciones financieras sólidas y ayudando a nuestros clientes a alcanzar sus metas.</p>
+            </div>
+            
+            <div>
+                <h3 class="footer-title">Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#tarjetas">Tarjetas</a></li>
+                    <li><a href="#beneficios">Beneficios</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="footer-title">Productos</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Tarjetas de Crédito</a></li>
+                    <li><a href="#">Tarjetas de Débito</a></li>
+                    <li><a href="#">Préstamos</a></li>
+                    <li><a href="#">Inversiones</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="footer-title">Contacto</h3>
+                <ul class="footer-links">
+                    <li><a href="#">bancoconfianza@ejemplo.com</a></li>
+                    <li><a href="#">+1 800 555 0123</a></li>
+                    <li><a href="#">Av. Principal 123, Ciudad</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Banco Confianza. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <!-- Modales de información detallada -->
+    <div id="creditoModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('credito')">&times;</button>
+            <h2 class="modal-title">Tarjeta de Crédito Clásica</h2>
+            <p><strong>Tasa de interés:</strong> 18% anual</p>
+            <p><strong>Comisión anual:</strong> $50 (primer año gratis)</p>
+            <p><strong>Línea de crédito:</strong> Desde $1,000 hasta $10,000</p>
+            <p><strong>Cashback:</strong> 3% en restaurantes, 2% en supermercados, 1% en el resto de compras</p>
+            <p><strong>Seguros incluidos:</strong></p>
+            <ul>
+                <li>Protección de compras hasta 90 días</li>
+                <li>Cobertura por fraude</li>
+                <li>Asistencia en viajes</li>
+            </ul>
+            <p><strong>Requisitos:</strong></p>
+            <ul>
+                <li>Ingresos mínimos de $1,500 mensuales</li>
+                <li>Historial crediticio favorable</li>
+                <li>Identificación oficial</li>
+                <li>Comprobante de domicilio</li>
+            </ul>
+            <p><strong>Beneficios adicionales:</strong></p>
+            <ul>
+                <li>Meses sin intereses en tiendas participantes</li>
